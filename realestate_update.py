@@ -18,8 +18,10 @@ import time
 
 url = "https://realestate.com.au/buy"
 
+# new properties url
 links = []
 
+# get recent days update
 day = 3
 
 
@@ -48,7 +50,7 @@ chrome_options.add_argument("--disable-blink-features=AutomationControlled")
 driver = webdriver.Chrome(chrome_options=chrome_options)
 
 
-# set search filter on local
+# Init: set search filter on local
 filter = search_filter()
 search_filter_init(filter)
 
@@ -63,18 +65,17 @@ driver.find_element_by_id('where').send_keys(filter.postcode)
 time.sleep(2)
 
 # click red "Search" button
-print("Click Search button")
+print("click Search button")
 driver.find_element_by_class_name("rui-search-button").click()
 time.sleep(2)
 
-# select sorting by date
-print("start to select filter")
+# sorting presentations by date
+print("start to set sorting ")
 
 dropdown = driver.find_element_by_css_selector(".Select-control")
 time.sleep(3)
 dropdown.click()
 time.sleep(1)
-
 
 actions = ActionChains(driver)
 actions.send_keys(Keys.ARROW_DOWN)
@@ -82,9 +83,9 @@ actions.send_keys(Keys.ENTER)
 actions.perform()
 
 time.sleep(2)
-print("select date finished")
+print("sorting finished")
 
-# get result
+# get all results of presentations
 results = driver.find_element_by_class_name("tiered-results-container")
 #print results.text
 
@@ -106,8 +107,7 @@ for element in presentations:
     link =  href.get_attribute('href')
     links.append(link)
 
-
-# prepare data
+# prepare data for reporting
 import os
 title = 'Realestate: New properties on sale'
 subtitle = ''
@@ -127,7 +127,7 @@ print title
 print subtitle
 print message
 
-# send notifications to Macos notification
+# send data to Macos notification
 def notify(title, subtitle, text):
     os.system("""
               osascript -e 'display notification "{}" with title "{}" subtitle "{}"'
