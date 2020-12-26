@@ -27,7 +27,7 @@ def customer_info_init(info):
     info.email = "stevencaiyaohua@gmail.com"
     info.rego = "GEY395"
     info.partysize = "2"
-    info.date = {0: '10:00 AM',
+    info.date = {0: '10:45 AM',
                  1: '',
                  2: '',
                  3: '',
@@ -119,19 +119,12 @@ def parking_book(b, info):
             time.sleep(3)
 
     # choose arrival time
-    select_arrival_time(b, "10:30 AM")
+    select_arrival_time(b, "11:00 AM")
 
     # click Next, then go to next page
-    nav_field = b.find_element_by_css_selector(".mt-4.row.row-cols-2")
-    nav_field.find_element_by_xpath('//button[text()="Next"]').click()
-    time.sleep(1)
-
-    # enter details
-    details_input(b, info)
-
-    # button enter details
-    b.find_element_by_id('ButtonEnterDetails').click()
-    time.sleep(3)
+    # nav_field = b.find_element_by_css_selector(".mt-4.row.row-cols-2")
+    b.find_element_by_xpath('//button[text()="Confirm"]').click()
+    time.sleep(2000)
 
     # click confirmation button
     b.find_element_by_id('ButtonSubmitPreRegistrations').click()
@@ -140,6 +133,15 @@ def parking_book(b, info):
     # get confirm details
     for elem in b.find_element_by_xpath('.//span[@class="mb-2"]'):
         print(elem.text)
+
+
+def enter_details(b):
+    # enter details
+    details_input(b, info)
+
+    # button enter details
+    b.find_element_by_id('ButtonEnterDetails').click()
+    time.sleep(3)
 
 
 print("Ruapehu Parking Ticket Agency")
@@ -151,6 +153,9 @@ customer_info_init(info)
 # browser init
 browser = webdriver.Chrome()
 browser.get(url)
+
+# Enter details
+enter_details(browser)
 
 # select ski area
 choose_ski_area(browser, "Tūroa")
